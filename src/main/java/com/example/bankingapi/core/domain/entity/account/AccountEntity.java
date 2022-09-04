@@ -4,11 +4,15 @@ import java.util.UUID;
 
 public class AccountEntity {
     final private UUID _id;
-    final protected AccountEntityProps props;
+    private Integer balance;
+    private final Boolean isActive;
+    private final String type;
 
-    AccountEntity(UUID id, AccountEntityProps props) {
+    AccountEntity(UUID id, Integer balance, String type, Boolean isActive) {
         this._id = id;
-        this.props = props;
+        this.balance = balance;
+        this.type = type;
+        this.isActive = isActive;
     }
 
     void validate() {
@@ -20,34 +24,30 @@ public class AccountEntity {
     }
 
     public Integer getBalance() {
-        return this.props.getBalance();
+        return this.balance;
     }
 
     public Boolean getIsActive() {
-        return this.props.getIsActive();
+        return this.isActive;
     }
 
     public String getType() {
-        return this.props.getType();
+        return this.type;
     }
 
-    public static AccountEntity createAccount(UUID id, AccountEntityProps accountEntityProps){
-     return new AccountEntity(id, accountEntityProps);
+    public static AccountEntity createAccount(UUID id, String type){
+     return new AccountEntity(id,0, type, true);
     }
 
     public void addMoney(Integer amount) {
-        final Integer balance = this.props.getBalance();
-        final Integer newBalance = balance + amount;
-        this.props.setBalance(amount);
+        this.balance = + amount;
     }
 
     public void withdrawMoney(Integer amount) {
-        final Integer balance = this.props.getBalance();
         if (balance < amount) {
             throw new RuntimeException("Balance cannot be lesser than amount to withdraw");
         }
-        final Integer newBalance = balance - amount;
-        this.props.setBalance(amount);
+        this.balance = - amount ;
     }
 
 }
